@@ -1,4 +1,45 @@
+import { useNavigate } from "react-router-dom";
 import {supabase} from "../../supabase-config";
+
+
+async function handleSignIn() {
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const passwordInput = document.getElementById("password") as HTMLInputElement;
+
+    const email = emailInput?.value;
+    const password = passwordInput?.value;
+
+    const navigate = useNavigate();
+
+    const {data: signUpData, error: signUpError} = await supabase.auth.signUp({
+        email: email,
+        password: password,
+    });
+
+    if(!signUpError) {
+        console.log("Sign up successful: ", signUpData.user?.email);
+        navigate('/envelopes');
+        return signUpData.user;
+    }
+
+    // console.error("Sign up error: ", signUpError);
+    // console.log("Sign up error message2: ", signUpError.message);
+
+    if (signUpError.message.includes("User already registered")){
+        console.log("the user is already registered");
+
+        const {data: signInData, error: signInError} = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if(!signInError){
+            console.log("Sign in successful: ", signInData.user?.email);
+            navigate('/envelopes');
+            return signInData?.user;
+        }
+    }
+}
 
 
 function LandingPage() {
@@ -21,7 +62,7 @@ function LandingPage() {
                         </div>
                             <input className="font-poppins bg-white w-[80%] text-black" type="text" id="password"  placeholder=" please don't use the word &quot;password&quot;" required />
 
-                            <button type="button" style={{backgroundColor: "#7E4E92"}} className="font-poppins mt-[5%] w-[75%] py-2">Log In/Sign Up</button>
+                            <button type="button" onClick={handleSignIn} style={{backgroundColor: "#7E4E92"}} className="font-poppins mt-[5%] w-[75%] py-2">Log In/Sign Up</button>
                             <p style={{color: "#000000"}} className="font-poppins items-center mt-1">Forgot Password</p>
                     </div>
 
