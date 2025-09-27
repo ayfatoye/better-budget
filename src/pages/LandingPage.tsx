@@ -1,8 +1,12 @@
 import React from 'react';
+import { useState } from 'react';
 
 const LandingPage: React.FC = () => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
     return (
-        <div className="flex flex-row w-full">
+        <>
+        <div className="sm:flex sm:flex-row hidden w-full">
             <div className="flex flex-col w-1/2 text-left bg-[#04020E] pl-20">
                 <div className='pt-40 font-baloo font-normal'>
                     <h1 className='text-4xl text-white font-normal'>
@@ -18,17 +22,26 @@ const LandingPage: React.FC = () => {
                                 type="email"
                                 id="email"
                                 name="email"
-                                className="w-90 p-2 bg-[#3F3F3F] border-2 border-[#04020E] focus:border-[#8B5CF6] focus:outline-none rounded transition-colors duration-200"
+                                className="w-50 md:w-75 lg:w-90 p-2 bg-[#3F3F3F] border-2 border-[#04020E] focus:border-[#8B5CF6] focus:outline-none rounded transition-colors duration-200"
                             />
                         </div>
                         <div className="mb-4">
                             <label htmlFor="password" className="block text-white mb-1">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                className="w-90 p-2 bg-[#3F3F3F] border-2 border-[#04020E] focus:border-[#8B5CF6] focus:outline-none rounded transition-colors duration-200"
-                            />
+                            <div className="w-50 md:w-75 lg:w-90 relative">
+                                <input
+                                    type={passwordVisible ? "text" : "password"}
+                                    id="password"
+                                    name="password"
+                                    className="w-50 md:w-75 lg:w-90 p-2 bg-[#3F3F3F] border-2 border-[#04020E] focus:border-[#8B5CF6] focus:outline-none rounded"
+                                />
+                                <img
+                                    src={passwordVisible ? "/open-icon.svg" : "/closed-icon.svg"}
+                                    alt="Toggle Password Visibility"
+                                    className="w-7 h-7 absolute top-2 right-3 cursor-pointer transition-all duration-600"
+                                    onClick={() => setPasswordVisible((v) => !v)}
+                                />
+                            </div>
+
                         </div>
                         <div className="flex items-center mb-4">
                             <input
@@ -42,7 +55,8 @@ const LandingPage: React.FC = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-112 h-12 mt-12 bg-[#8B5CF6] flex justify-center items-center text-white text-xl font-extrabold py-2 px-4 rounded-sm hover:bg-[#7c3aed] transition-colors duration-200"
+                            className="w-55 md:w-77 lg:w-100 h-12 mt-12 bg-[#8B5CF6] flex justify-center items-center text-white text-xl font-extrabold py-2 px-4 rounded-sm hover:bg-[#7c3aed] transition-colors duration-200"
+                            w-50 md:w-75 lg:w-90
                         >
                             Log In or Sign Up
                         </button>
@@ -53,6 +67,13 @@ const LandingPage: React.FC = () => {
                 <img src="/logo_1.jpg" alt="Logo" className="h-62 w-62 rounded-[120px]" />
             </div>
         </div>
+        <div className='sm:hidden flex flex-col w-full h-screen bg-[#04020E] text-white items-center'>
+            <div>
+                <img src="/mobile_logo.jpg" alt="Logo" className="h-62 w-62 mt-4 rounded-[140px]" />
+            </div>
+        </div>
+        </>
+        
     );
 };
 
